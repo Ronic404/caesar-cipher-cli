@@ -7,8 +7,9 @@ const cryptographer = (shift, input, output, action) => {
   const text = fs.readFileSync(fileInput, 'utf-8', (err, content) => content.toString());
   const charsArray = text.split('').map(el => el.charCodeAt());
   let result = '';
+
   if (shift < 0) {
-    return process.stdout.write('Шифт должен быть больше ноля ')
+    return process.stderr.write('Shift must be positive number \n')
   } else if (shift > 26) {
     shift = shift % 26
   }
@@ -32,7 +33,7 @@ const cryptographer = (shift, input, output, action) => {
       }
     });
     result = String.fromCharCode(...newCharsArray);
-    console.log(text, '   ', result);    
+    // console.log(text, '   ', result);    
   } else if (action === 'decode') {
     const newCharsArray = charsArray.map(el => {
       if (el >= 65 && el <= 90) {
@@ -52,9 +53,9 @@ const cryptographer = (shift, input, output, action) => {
       }
     });
     result = String.fromCharCode(...newCharsArray);
-    console.log(text, '   ', result);
+    // console.log(text, '   ', result);
   } else {
-    process.stdout.write('Неверный экшн ')
+    return process.stderr.write('Wrong action \n');
   }
 
   fs.appendFile(fileOutput, `${result}\n`, () => {});
